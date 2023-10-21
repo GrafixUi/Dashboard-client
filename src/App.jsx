@@ -22,6 +22,8 @@ function App() {
                         <Route index element={<Customers />} /> 
                         <Route path="addcustomers" element={<AddCustomers />} />
                     </Route>
+                    <Route path="addcustomer" element={<AddCustomers />} />
+                    <Route path="additem" element={<AddItem />} />
                 </Route>
             </Routes>
             <ToastContainer autoClose={3000} />

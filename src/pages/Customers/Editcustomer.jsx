@@ -28,7 +28,7 @@ export default function EditCustomer({ customer, onSave }) {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="container p-6">
+        <form onSubmit={handleSubmit} className="container p-6 overscroll-y-auto">
             <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-700">Customer Type:</label>
                 <select

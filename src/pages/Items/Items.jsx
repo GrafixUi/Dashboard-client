@@ -1,10 +1,12 @@
-import React, { useState, useEffect } from 'react'
-import EditItems from './Edititems'
-import Modal from '../../components/modal'
-import { connect } from 'react-redux'
-import { deleteItem, fetchItems } from '../../Redux/actions/Items/items'
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
+import React, { useState, useEffect } from 'react';
+import EditItems from './Edititems';
+import Modal from '../../components/modal';
+import { connect } from 'react-redux';
+import { deleteItem, fetchItems } from '../../Redux/actions/Items/items';
+import 'react-toastify/dist/ReactToastify.css';
+import { FiEdit2, FiX , FiPlus } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
+
 
 function Items({ items, fetchItems, deleteItem }) {
     const [editingitems, setEditingitems] = useState(null)
@@ -21,17 +23,28 @@ function Items({ items, fetchItems, deleteItem }) {
       };
 
     return (
-        <div className="bg-white px-4 pt-3 pb-4 rounded-sm border border-gray-200 flex-1">
-            <div className="flex flex-row items-center gap-x-6">
-                <strong className="text-gray-700 font-medium gap-x-6">All items</strong>
+        <div className="bg-white px-4 pt-3 pb-4 rounded-sm  flex-1">
+            <div className="flex flex-row items-center gap-x-6 justify-between">
+                <h2 className="text-gray-700 font-medium gap-x-6">All items</h2>
+                <div>
+                    <Link to="/additem">
+                    <button
+                        type="submit"
+                        className="rounded-md  flex flex-row px-3 py-2 text-sm font-semibold text-white shadow-sm bg-green-600"
+                    >
+                        <FiPlus className='text-white ' width={60} /> <h1>New</h1>
+                    </button></Link>
+                    
+                </div>
             </div>
             <div className="border-x border-gray-200 rounded-sm mt-3">
                 <table className="w-full text-gray-700">
                     <thead>
                         <tr>
-                            <th>Name</th>
-                            <th>Description</th>
-                            <th>Rate</th>
+                            <th className='text-sm font-medium'>Name</th>
+                            <th className='text-sm font-medium'>Description</th>
+                            <th className='text-sm font-medium'>Rate</th>
+                            <th className='text-sm font-medium'>Action</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -40,27 +53,27 @@ function Items({ items, fetchItems, deleteItem }) {
                                 <td>{item.name}</td>
                                 <td>{item.description}</td>
                                 <td>$ {item.sellingprice}</td>
-
+                                
                                 <td>
-                                    <div className="flex items-center justify-end gap-x-6">
+                                    <div className="flex items-center gap-x-3">
                                         <button
                                             type="submit"
-                                            className="rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                                            className="rounded-md px-2 py-2 font-semibold text-green-600 shadow-sm"
                                             onClick={() => {
                                                 setEditingitems(item)
                                                 setIsModalOpen(true)
                                             }}
                                         >
-                                            Edit
+                                           <FiEdit2 width={50} />
                                         </button>
                                         <button
                                             type="submit"
-                                            className="rounded-md bg-red-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                                            className="rounded-md  px-2 py-2 font-semibold text-red-600 shadow-sm shadow-lime-500"
                                             onClick={() => {
                                                 handleDeleteItem(item.item_id);
                                             }}
                                         >
-                                            Delete
+                                             <FiX width={50} />
                                         </button>
                                     </div>
                                 </td>
