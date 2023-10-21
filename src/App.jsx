@@ -5,6 +5,7 @@ import Items from './pages/Items/Items';
 import AddItem from './pages/Items/Additem';
 import Customers from './pages/Customers/Customerslist';
 import AddCustomers from './pages/Customers/Addcustomers';
+import Invoice from './pages/invoice/invoice';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
@@ -24,9 +25,10 @@ function App() {
                     </Route>
                     <Route path="addcustomer" element={<AddCustomers />} />
                     <Route path="additem" element={<AddItem />} />
+                    <Route path="invoice" element={<Invoice />} />
                 </Route>
             </Routes>
-            <ToastContainer autoClose={3000} />
+            <ToastContainer autoClose={5000} />
         </Router>
     )
 }
