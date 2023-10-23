@@ -8,24 +8,26 @@ import AddCustomers from './pages/Customers/Addcustomers';
 import Invoice from './pages/invoice/invoice';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Login from './components/Auth/login';
 
 function App() {
     return (
         <Router>
             <Routes>
-                <Route path="/" element={<Layout />}>
+                <Route path="/" element={<Login />} />
+                <Route path="/dashboard" element={<Layout />}>
                     <Route index element={<Dashboard />} />
+                    
                     <Route path="items" >
                         <Route index element={<Items />} /> 
-                        <Route path="additems" element={<AddItem />} />
                     </Route>
                     <Route path="customers" >
                         <Route index element={<Customers />} /> 
-                        <Route path="addcustomers" element={<AddCustomers />} />
                     </Route>
                     <Route path="addcustomer" element={<AddCustomers />} />
                     <Route path="additem" element={<AddItem />} />
                     <Route path="invoice" element={<Invoice />} />
+
                 </Route>
             </Routes>
             <ToastContainer autoClose={5000} />
