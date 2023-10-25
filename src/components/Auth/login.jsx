@@ -16,13 +16,13 @@ export default function Login() {
                 <div className="authentication-inner py-4">
                     <div className="card">
                         <div className="card-body card-custom">
-                            <div className="flex flex-col text-center justify-center gap-2">
-                                <img src={logo} alt="" className="w-20 h-20" />
-                                <h2 className="text-body text-[25px] font-semibold mt-2 mb-2">Dashboard</h2>
+                            <div className="flex flex-col text-center justify-center align-items-center gap-2">
+                                <img src={logo} alt="" className="w-24 h-24" />
+                                <h2 className="text-body text-[30px]  font-semibold mt-2 mb-2">Dashboard</h2>
                             </div>
-
-                            <p className="mb-4 text-center">Please sign-in to your account and start the adventure</p>
-
+                            <p className="mb-4 text-center text-sm">
+                                Please sign-in to your account and start the adventure
+                            </p>
                             <form id="formAuthentication" className="mb-3 text-sm" onSubmit={handleSubmit}>
                                 <div className="mb-3">
                                     <label htmlFor="email" className="form-label">
@@ -30,7 +30,7 @@ export default function Login() {
                                     </label>
                                     <input
                                         type="text"
-                                        className="form-control"
+                                        className="form-control placeholder:text-sm placeholder:opacity-25"
                                         id="email"
                                         name="email-username"
                                         placeholder="Enter your email or username"
@@ -38,21 +38,18 @@ export default function Login() {
                                     />
                                 </div>
                                 <div className="mb-3 form-password-toggle">
-                                    <div className="d-flex justify-content-between">
+                                    <div className="d-flex justify-content-between ">
                                         <label className="form-label" htmlFor="password">
                                             Password
                                         </label>
-                                        <a href="auth-forgot-password-basic.html">
-                                            <small>Forgot Password?</small>
-                                        </a>
                                     </div>
                                     <div className="input-group input-group-merge">
                                         <input
                                             type="password"
                                             id="password"
-                                            className="form-control"
+                                            className="form-control placeholder:text-sm placeholder:opacity-25"
                                             name="password"
-                                            placeholder=""
+                                            placeholder="Enter your Password"
                                             aria-describedby="password"
                                         />
                                         <span className="input-group-text cursor-pointer">
@@ -61,13 +58,9 @@ export default function Login() {
                                     </div>
                                 </div>
                                 <div className="mb-3">
-                                    <div className="form-check">
-                                        <input className="form-check-input" type="checkbox" id="remember-me" />
-                                        <label className="form-check-label" htmlFor="remember-me">
-                                            {' '}
-                                            Remember Me{' '}
-                                        </label>
-                                    </div>
+                                    <Link to=''>
+                                        <small>Forgot Password?</small>
+                                    </Link>
                                 </div>
                                 <div className="mb-3 flex justify-center">
                                     <button
