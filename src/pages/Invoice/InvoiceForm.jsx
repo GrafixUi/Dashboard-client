@@ -15,16 +15,15 @@ const today = date.toLocaleDateString('en-GB', {
 const InvoiceForm = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [discount, setDiscount] = useState('')
-    const [tax, setTax] = useState('')
+    const [tax, setTax] = useState('') 
     const [invoiceNumber, setInvoiceNumber] = useState(1)
-    const [cashierName, setCashierName] = useState('')
     const [customerName, setCustomerName] = useState('')
     const [items, setItems] = useState([
         {
             id: uid(6),
             name: '',
             qty: 1,
-            price: '1.00'
+            rate: '1.00'
         }
     ])
 
@@ -40,7 +39,7 @@ const InvoiceForm = () => {
                 id: uid(6),
                 name: '',
                 qty: 1,
-                price: '1.00'
+                rate: '1.00'
             }
         ])
     }
@@ -53,7 +52,7 @@ const InvoiceForm = () => {
                 id: id,
                 name: '',
                 qty: 1,
-                price: '1.00'
+                rate: '1.00'
             }
         ])
     }
@@ -82,7 +81,7 @@ const InvoiceForm = () => {
     }
 
     const subtotal = items.reduce((prev, curr) => {
-        if (curr.name.trim().length > 0) return prev + Number(curr.price * Math.floor(curr.qty))
+        if (curr.name.trim().length > 0) return prev + Number(curr.rate * Math.floor(curr.qty))
         else return prev
     }, 0)
     const taxRate = (tax * subtotal) / 100
@@ -94,7 +93,7 @@ const InvoiceForm = () => {
             <div className="my-6 flex-1 space-y-2 text-xs  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
                 <div className="flex flex-col justify-between space-y-2 border-b border-gray-900/10 pb-4 md:flex-row md:items-center md:space-y-0">
                     <div className="flex space-x-2">
-                        <span className="font-medium">Current Date: </span>
+                        <span className="font-medium text-red-500">Invoice Date </span>
                         <span>{today}</span>
                     </div>
                     <div className="flex items-center space-x-2">
@@ -103,7 +102,7 @@ const InvoiceForm = () => {
                         </label>
                         <input
                             required
-                            className="max-w-[130px]"
+                            className="max-w-[130px] p-1 px-2 bg-slate-50 border rounded-md"
                             type="number"
                             name="invoiceNumber"
                             id="invoiceNumber"
@@ -115,26 +114,29 @@ const InvoiceForm = () => {
                     </div>
                 </div>
                 <h1 className="text-center text-lg font-bold">NEW INVOICE</h1>
-                <div className="grid grid-cols-2 gap-2 pt-4 pb-8">
-                    <div className="flex">
-                        <label htmlFor="cashierName" className="text-sm mt-1 font-bold sm:text-base">
-                            Customer Name :
+                <div className="flex flex-col gap-2 pt-4 pb-8 p-4 bg-slate-100 rounded-lg">
+                    <div className="flex flex-row p-1">
+                        <label htmlFor="customername" className="text-sm mt-2 text-red-500 font-medium ">
+                            Customer Name *
                         </label>
-                        <div className="ml-2">
+                        <div className="ml-2 w-1/2 ">
                             <Custlistbox />
                         </div>
                     </div>
-                    <div>
-                        <h3>Billing Address</h3>
+                    <div className='p-2'>
+                        <h3 className='font-medium'>Billing Address </h3>
                     </div>
                 </div>
-                <table className="w-full p-4 text-left">
+                <div>
+                    
+                </div>
+                <table className="w-full p-2 text-left">
                     <thead>
-                        <tr className="border-b border-gray-900/10 text-sm md:text-base">
-                            <th>ITEM</th>
-                            <th>QTY</th>
-                            <th className="text-center">PRICE</th>
-                            <th className="text-center">ACTION</th>
+                        <tr className="border-b border-gray-900/10 text-sm ">
+                            <th>ITEM DETAILS</th>
+                            <th className='text-left'>QUANTITY</th>
+                            <th className="text-left">RATE</th>
+                            <th className="text-left">ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -144,7 +146,7 @@ const InvoiceForm = () => {
                                 id={item.id}
                                 name={item.name}
                                 qty={item.qty}
-                                price={item.price}
+                                rate={item.rate}
                                 onDeleteItem={deleteItemHandler}
                                 onEdtiItem={edtiItemHandler}
                             />
@@ -152,7 +154,7 @@ const InvoiceForm = () => {
                     </tbody>
                 </table>
                 <button
-                    className="rounded-md bg-blue-500 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-600"
+                    className="rounded-md bg-green-500 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-600"
                     type="button"
                     onClick={addItemHandler}
                 >
@@ -184,17 +186,17 @@ const InvoiceForm = () => {
             <div className="basis-1/4 bg-transparent">
                 <div className="sticky top-0 z-10 space-y-4 divide-y divide-gray-900/10 pb-8 md:pt-6 md:pl-4">
                     <button
-                        className="w-full rounded-md bg-blue-500 py-2 text-sm text-white shadow-sm hover:bg-blue-600"
+                        className="w-full rounded-md bg-green-500 py-2 text-sm text-white shadow-sm hover:bg-green-600"
                         type="submit"
                     >
-                        Review Invoice
+                        Save and Send Invoice
                     </button>
+                    
                     <InvoiceModal
                         isOpen={isOpen}
                         setIsOpen={setIsOpen}
                         invoiceInfo={{
                             invoiceNumber,
-                            cashierName,
                             customerName,
                             subtotal,
                             taxRate,
@@ -205,13 +207,13 @@ const InvoiceForm = () => {
                         onAddNextInvoice={addNextInvoiceHandler}
                     />
                     <div className="space-y-4 py-2">
-                        <div className="space-y-2">
+                        {/* <div className="space-y-2">
                             <label className="text-sm font-bold md:text-base" htmlFor="tax">
                                 Tax rate:
                             </label>
                             <div className="flex items-center">
                                 <input
-                                    className="w-full rounded-r-none bg-white shadow-sm"
+                                    className="w-full rounded-r-none p-2 bg-white shadow-sm"
                                     type="number"
                                     name="tax"
                                     id="tax"
@@ -223,14 +225,14 @@ const InvoiceForm = () => {
                                 />
                                 <span className="rounded-r-md bg-gray-200 py-2 px-4 text-gray-500 shadow-sm">%</span>
                             </div>
-                        </div>
+                        </div> */}
                         <div className="space-y-2">
-                            <label className="text-sm font-bold md:text-base" htmlFor="discount">
+                            <label className="text-sm font-medium " htmlFor="discount">
                                 Discount rate:
                             </label>
                             <div className="flex items-center">
                                 <input
-                                    className="w-full rounded-r-none bg-white shadow-sm"
+                                    className="w-full rounded-r-none bg-slate-50 p-2  shadow-sm"
                                     type="number"
                                     name="discount"
                                     id="discount"
