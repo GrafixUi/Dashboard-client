@@ -15,7 +15,7 @@ function classNames(...classes) {
 }
 
 export default function Example() {
-    const [selected, setSelected] = useState(people[3])
+    const [selected, setSelected] = useState(people[0])
 
     return (
         <Listbox value={selected} onChange={setSelected}>
@@ -57,7 +57,7 @@ export default function Example() {
                                         key={person.id}
                                         className={({ active }) =>
                                             classNames(
-                                                active ? 'bg-indigo-600 text-white' : 'text-gray-900',
+                                                active ? 'bg-green-600 text-white' : 'text-gray-900',
                                                 'relative cursor-default select-none py-2 pl-3 pr-9'
                                             )
                                         }
@@ -66,11 +66,7 @@ export default function Example() {
                                         {({ selected, active }) => (
                                             <>
                                                 <div className="flex items-center">
-                                                    <img
-                                                        src={person.avatar}
-                                                        alt=""
-                                                        className="h-5 w-5 flex-shrink-0 rounded-full"
-                                                    />
+                                                    
                                                     <span
                                                         className={classNames(
                                                             selected ? 'font-semibold' : 'font-normal',
@@ -108,7 +104,7 @@ export default function Example() {
                                         )}
                                     </Listbox.Option>
                                 ))}
-                                <div className='text-center'>
+                                <div className='text-center mt-3 mb-2'>
                                     <Link to="/addcustomer">
                                         <button
                                             type="submit"

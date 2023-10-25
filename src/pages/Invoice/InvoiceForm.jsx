@@ -15,7 +15,7 @@ const today = date.toLocaleDateString('en-GB', {
 const InvoiceForm = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [discount, setDiscount] = useState('')
-    const [tax, setTax] = useState('') 
+    const [tax, setTax] = useState('')
     const [invoiceNumber, setInvoiceNumber] = useState(1)
     const [customerName, setCustomerName] = useState('')
     const [items, setItems] = useState([
@@ -93,11 +93,11 @@ const InvoiceForm = () => {
             <div className="my-6 flex-1 space-y-2 text-xs  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
                 <div className="flex flex-col justify-between space-y-2 border-b border-gray-900/10 pb-4 md:flex-row md:items-center md:space-y-0">
                     <div className="flex space-x-2">
-                        <span className="font-medium text-red-500">Invoice Date </span>
+                        <span className="font-medium text-green-500">Invoice Date </span>
                         <span>{today}</span>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <label className="font-medium text-red-500" htmlFor="invoiceNumber">
+                        <label className="font-medium text-green-500" htmlFor="invoiceNumber">
                             Invoice # :
                         </label>
                         <input
@@ -123,18 +123,47 @@ const InvoiceForm = () => {
                             <Custlistbox />
                         </div>
                     </div>
-                    <div className='p-2'>
-                        <h3 className='font-medium'>Billing Address </h3>
+                    <div className="p-2">
+                        <h3 className="font-medium">Billing Address </h3>
                     </div>
                 </div>
-                <div>
-                    
+                <div></div>
+                <div className="px-2 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <div className="px-1  flex sm:gap-4 sm:px-0">
+                        <h2 className="text-sm font-medium leading-6 text-gray-900 ">Terms</h2>
+                        <select className="text-sm leading-6 bg-slate-100 rounded p-1 w-full text-gray-700 sm:col-span-2 sm:mt-0">
+                            <option value="DueonReceipt">Due on Receipt</option>
+                        </select>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                        <label className="font-medium " htmlFor="invoiceNumber">
+                            Due Date :
+                        </label>
+                        <input
+                            required
+                            className="max-w-[130px] p-1 px-2 bg-slate-50 border rounded-md"
+                            type="date"
+                            name="invoiceNumber"
+                            id="invoiceNumber"
+                            min="1"
+                            step="1"
+                            value={invoiceNumber}
+                            onChange={(event) => setInvoiceNumber(event.target.value)}
+                        />
+                    </div>
+                </div>
+                <div className="flex items-center space-x-2">
+                    <label className="font-medium " htmlFor="invoiceNumber">
+                        Subject :
+                    </label>
+
+                    <textarea className="p-2 border bg-slate-50 rounded" name="" id="" cols="50" rows="1"></textarea>
                 </div>
                 <table className="w-full p-2 text-left">
                     <thead>
                         <tr className="border-b border-gray-900/10 text-sm ">
                             <th>ITEM DETAILS</th>
-                            <th className='text-left'>QUANTITY</th>
+                            <th className="text-left">QUANTITY</th>
                             <th className="text-left">RATE</th>
                             <th className="text-left">ACTION</th>
                         </tr>
@@ -160,26 +189,34 @@ const InvoiceForm = () => {
                 >
                     Add Item
                 </button>
-                <div className="flex flex-col items-end space-y-2 pt-6">
-                    <div className="flex w-full justify-between md:w-1/2">
-                        <span className="font-bold">Subtotal:</span>
-                        <span>${subtotal.toFixed(2)}</span>
+                <div className='grid grid-cols-2'>
+                    <div className="flex flex-col w-96 ">
+                        <label className="font-medium " htmlFor="invoiceNumber">
+                        Customer Notes :
+                        </label>
+                        <textarea className="p-2 mt-3 border bg-slate-50 rounded" name="" id="" cols="10" rows="3" placeholder='Thanks for your business'></textarea>
                     </div>
-                    <div className="flex w-full justify-between md:w-1/2">
-                        <span className="font-bold">Discount:</span>
-                        <span>
-                            ({discount || '0'}%)${discountRate.toFixed(2)}
-                        </span>
-                    </div>
-                    <div className="flex w-full justify-between md:w-1/2">
-                        <span className="font-bold">Tax:</span>
-                        <span>
-                            ({tax || '0'}%)${taxRate.toFixed(2)}
-                        </span>
-                    </div>
-                    <div className="flex w-full justify-between border-t border-gray-900/10 pt-2 md:w-1/2">
-                        <span className="font-bold">Total:</span>
-                        <span className="font-bold">${total % 1 === 0 ? total : total.toFixed(2)}</span>
+                    <div className="flex flex-col items-end space-y-2 pt-6">
+                        <div className="flex w-full justify-between md:w-1/2">
+                            <span className="font-bold">Subtotal:</span>
+                            <span>${subtotal.toFixed(2)}</span>
+                        </div>
+                        <div className="flex w-full justify-between md:w-1/2">
+                            <span className="font-bold">Discount:</span>
+                            <span>
+                                ({discount || '0'}%)${discountRate.toFixed(2)}
+                            </span>
+                        </div>
+                        <div className="flex w-full justify-between md:w-1/2">
+                            <span className="font-bold">Tax:</span>
+                            <span>
+                                ({tax || '0'}%)${taxRate.toFixed(2)}
+                            </span>
+                        </div>
+                        <div className="flex w-full justify-between border-t border-gray-900/10 pt-2 md:w-1/2">
+                            <span className="font-bold">Total:</span>
+                            <span className="font-bold">${total % 1 === 0 ? total : total.toFixed(2)}</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -191,7 +228,7 @@ const InvoiceForm = () => {
                     >
                         Save and Send Invoice
                     </button>
-                    
+
                     <InvoiceModal
                         isOpen={isOpen}
                         setIsOpen={setIsOpen}
