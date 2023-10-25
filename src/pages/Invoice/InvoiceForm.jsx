@@ -136,24 +136,20 @@ const InvoiceForm = () => {
                         </select>
                     </div>
                     <div className="flex items-center space-x-2">
-                        <label className="font-medium " htmlFor="invoiceNumber">
+                        <label className="font-medium " htmlFor="duedate">
                             Due Date :
                         </label>
                         <input
                             required
                             className="max-w-[130px] p-1 px-2 bg-slate-50 border rounded-md"
                             type="date"
-                            name="invoiceNumber"
-                            id="invoiceNumber"
-                            min="1"
-                            step="1"
-                            value={invoiceNumber}
-                            onChange={(event) => setInvoiceNumber(event.target.value)}
+                            name="duedate"
+                            id="duedate"
                         />
                     </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                    <label className="font-medium " htmlFor="invoiceNumber">
+                    <label className="font-medium " htmlFor="duedate">
                         Subject :
                     </label>
 
@@ -189,12 +185,19 @@ const InvoiceForm = () => {
                 >
                     Add Item
                 </button>
-                <div className='grid grid-cols-2'>
+                <div className="grid grid-cols-2">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
-                        Customer Notes :
+                            Customer Notes :
                         </label>
-                        <textarea className="p-2 mt-3 border bg-slate-50 rounded" name="" id="" cols="10" rows="3" placeholder='Thanks for your business'></textarea>
+                        <textarea
+                            className="p-2 mt-3 border bg-slate-50 rounded"
+                            name=""
+                            id=""
+                            cols="10"
+                            rows="3"
+                            placeholder="Thanks for your business"
+                        ></textarea>
                     </div>
                     <div className="flex flex-col items-end space-y-2 pt-6">
                         <div className="flex w-full justify-between md:w-1/2">
@@ -217,6 +220,21 @@ const InvoiceForm = () => {
                             <span className="font-bold">Total:</span>
                             <span className="font-bold">${total % 1 === 0 ? total : total.toFixed(2)}</span>
                         </div>
+                    </div>
+                </div>
+                <div className='bg-slate-100 p-4'>
+                    <div className="flex flex-col w-96 ">
+                        <label className="font-medium " htmlFor="invoiceNumber">
+                            Customer Notes :
+                        </label>
+                        <textarea
+                            className="p-2 mt-3 border bg-slate-50 rounded"
+                            name=""
+                            id=""
+                            cols="10"
+                            rows="3"
+                            placeholder="Enter the terms and conditions of your business to be displayed in your transaction"
+                        ></textarea>
                     </div>
                 </div>
             </div>
