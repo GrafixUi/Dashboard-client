@@ -4,6 +4,7 @@ import InvoiceItem from './InvoiceItem'
 import InvoiceModal from './InvoiceModal'
 import incrementString from './helpers/incrementString'
 import Custlistbox from './components/Custlistbox'
+import logo from '../../assets/icons8-invoice-94.png'
 
 const date = new Date()
 const today = date.toLocaleDateString('en-GB', {
@@ -16,7 +17,7 @@ const InvoiceForm = () => {
     const [isOpen, setIsOpen] = useState(false)
     const [discount, setDiscount] = useState('')
     const [tax, setTax] = useState('')
-    const [invoiceNumber, setInvoiceNumber] = useState(1)
+    const [invoiceNumber, setInvoiceNumber] = useState('0001')
     const [customerName, setCustomerName] = useState('')
     const [items, setItems] = useState([
         {
@@ -91,30 +92,67 @@ const InvoiceForm = () => {
     return (
         <form className="relative flex flex-col px-2  md:flex-row" onSubmit={reviewInvoiceHandler}>
             <div className="my-6 flex-1 space-y-2 text-xs  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
-                <div className="flex flex-col justify-between space-y-2 border-b border-gray-900/10 pb-4 md:flex-row md:items-center md:space-y-0">
-                    <div className="flex space-x-2">
-                        <span className="font-medium text-green-500">Invoice Date </span>
-                        <span>{today}</span>
+                <div className="grid grid-cols-2">
+                    <div>
+                        <div className="w-72">
+                            <div className="flex mb-4 gap-2 align-items-center">
+                                <img src={logo} alt="" />
+
+                                <span className=" fw-bold fs-4"> Dashboard </span>
+                            </div>
+                            <p className="mb-2">Office 149, 450 South Brand Brooklyn</p>
+                            <p className="mb-2">San Diego County, CA 91905, USA</p>
+                            <p className="mb-3">+1 (123) 456 7891, +44 (876) 543 2198</p>
+                        </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                        <label className="font-medium text-green-500" htmlFor="invoiceNumber">
-                            Invoice # :
-                        </label>
-                        <input
-                            required
-                            className="max-w-[130px] p-1 px-2 bg-slate-50 border rounded-md"
-                            type="number"
-                            name="invoiceNumber"
-                            id="invoiceNumber"
-                            min="1"
-                            step="1"
-                            value={invoiceNumber}
-                            onChange={(event) => setInvoiceNumber(event.target.value)}
-                        />
+                    <div className="">
+                        <dl className="row mb-2">
+                            <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0">
+                                <span className="h4 text-capitalize mb-0 text-nowrap">Invoice</span>
+                            </dt>
+                            <dd className="col-sm-6">
+                                <div className="input-group  disabled w-px-150">
+                                    <span className="input-group-text">#</span>
+                                    <input
+                                        type="yexy"
+                                        className="form-control"
+                                        disabled
+                                        placeholder="3905"
+                                        value=""
+                                        id="invoiceId"
+                                    />
+                                </div>
+                            </dd>
+                            <div className="flex mt-2">
+                                <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0 mt-2.5">
+                                    <span className="fw-normal">Date:</span>
+                                </dt>
+                                <dd className="col-sm-6 d-flex justify-content-md-end pe-0 ps-0 ps-sm-2">
+                                    <input
+                                        type="date"
+                                        className="form-control w-px-150 date-picker"
+                                        placeholder="YYYY-MM-DD"
+                                    />
+                                </dd>
+                            </div>
+                            <div className="flex mt-2">
+                                <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0 mt-2.5">
+                                    <span className="fw-normal">Due Date:</span>
+                                </dt>
+                                <dd className="col-sm-6 d-flex justify-content-md-end pe-0 ps-0 ps-sm-2">
+                                    <input
+                                        type="date"
+                                        className="form-control w-px-150 date-picker"
+                                        placeholder="YYYY-MM-DD"
+                                    />
+                                </dd>
+                            </div>
+                        </dl>
                     </div>
                 </div>
+                <hr className='p-2' />
                 <h1 className="text-center text-lg font-bold">NEW INVOICE</h1>
-                <div className="flex flex-col gap-2 pt-4 pb-8 p-4 bg-slate-100 rounded-lg">
+                <div className="flex flex-col gap-2 pt-4 pb-8 p-4 bg-slate-50 rounded-lg">
                     <div className="flex flex-row p-1">
                         <label htmlFor="customername" className="text-sm mt-2 text-red-500 font-medium ">
                             Customer Name *
@@ -123,38 +161,44 @@ const InvoiceForm = () => {
                             <Custlistbox />
                         </div>
                     </div>
-                    <div className="p-2">
-                        <h3 className="font-medium">Billing Address </h3>
+                    <div className=" grid grid-cols-2 p-2 mt-4">
+                        <div>
+                            <h3 className="font-medium">Billing Address </h3>
+                        </div>
+                        <div>
+                            <h3 className="font-medium">Shipping Address </h3>
+                        </div>
                     </div>
                 </div>
-                <div></div>
                 <div className="px-2 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <div className="px-1  flex sm:gap-4 sm:px-0">
+                    <div className="flex items-center px-1 sm:gap-4 sm:px-0">
                         <h2 className="text-sm font-medium leading-6 text-gray-900 ">Terms</h2>
-                        <select className="text-sm leading-6 bg-slate-100 rounded p-1 w-full text-gray-700 sm:col-span-2 sm:mt-0">
+                        <select className="text-sm leading-6 bg-slate-100 rounded p-2 w-full text-gray-700 sm:col-span-2 sm:mt-0">
                             <option value="DueonReceipt">Due on Receipt</option>
                         </select>
                     </div>
-                    <div className="flex items-center space-x-2">
+                    <div className="flex items-center space-x-2 p-2">
                         <label className="font-medium " htmlFor="duedate">
                             Due Date :
                         </label>
                         <input
                             required
-                            className="max-w-[130px] p-1 px-2 bg-slate-50 border rounded-md"
+                            className="max-w-[130px] p-2 px-2 bg-slate-50 border rounded-md"
                             type="date"
                             name="duedate"
                             id="duedate"
                         />
                     </div>
                 </div>
-                <div className="flex items-center space-x-2">
+                <hr className="p-1" />
+                <div className="flex items-center space-x-2 p-2">
                     <label className="font-medium " htmlFor="duedate">
                         Subject :
                     </label>
 
-                    <textarea className="p-2 border bg-slate-50 rounded" name="" id="" cols="50" rows="1"></textarea>
+                    <textarea className="p-2  border  bg-slate-50 rounded" name="" rows="2" id="" cols="50"></textarea>
                 </div>
+                <hr  className='p-2 mt-4'/>
                 <table className="w-full p-2 text-left">
                     <thead>
                         <tr className="border-b border-gray-900/10 text-sm ">
@@ -185,6 +229,7 @@ const InvoiceForm = () => {
                 >
                     Add Item
                 </button>
+                <div></div>
                 <div className="grid grid-cols-2">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
@@ -222,7 +267,7 @@ const InvoiceForm = () => {
                         </div>
                     </div>
                 </div>
-                <div className='bg-slate-100 p-4'>
+                <div className="bg-slate-50 p-4 rounded">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
                             Customer Notes :
