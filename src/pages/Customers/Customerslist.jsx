@@ -3,8 +3,8 @@ import EditCustomer from './Editcustomer'
 import Modal from '../../components/modal'
 import { connect } from 'react-redux'
 import { fetchCustomers, deleteCustomer } from '../../Redux/actions/Customer/customers'
-import { FiEdit2, FiX, FiPlus } from 'react-icons/fi'
-import { Link } from 'react-router-dom'
+import { FiEdit2, FiX, FiPlus } from 'react-icons/fi';
+import { Link } from 'react-router-dom';
 
 function Customers({ customers, fetchCustomers, deleteCustomer }) {
     const [editingCustomer, setEditingCustomer] = useState(null)

@@ -118,7 +118,7 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                         </div>
                                         <div className='mb-2'>
                                             <span className="font-medium">Billing Address :</span>
-                                            <span>{invoiceInfo.customerName}</span>
+                                            <span>{invoiceInfo.billingaddress}</span>
                                         </div>
                                     </div>
 
@@ -138,10 +138,10 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                                     <td className="w-full">{item.name}</td>
                                                     <td className="min-w-[50px] text-center">{item.qty}</td>
                                                     <td className="min-w-[80px] text-right">
-                                                        ${Number(item.price).toFixed(2)}
+                                                        ${Number(item.rate).toFixed(2)}
                                                     </td>
                                                     <td className="min-w-[90px] text-right">
-                                                        ${Number(item.price * item.qty).toFixed(2)}
+                                                        ${Number(item.rate * item.qty).toFixed(2)}
                                                     </td>
                                                 </tr>
                                             ))}
@@ -187,7 +187,7 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                     >
                                         <path
                                             strokeLinecap="round"
-                                            strokeLinejoin="round"
+                                            strokeLinejoin="round"z
                                             strokeWidth={2}
                                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                                         />

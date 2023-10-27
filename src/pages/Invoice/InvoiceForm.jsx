@@ -85,9 +85,11 @@ const InvoiceForm = () => {
         if (curr.name.trim().length > 0) return prev + Number(curr.rate * Math.floor(curr.qty))
         else return prev
     }, 0)
-    const taxRate = (tax * subtotal) / 100
-    const discountRate = (discount * subtotal) / 100
-    const total = subtotal - discountRate + taxRate
+    const taxRate = parseFloat(tax); 
+    const discountRate = parseFloat(discount); 
+    // const taxRate = (tax * subtotal) / 100;
+    // const discountRate = (discount * subtotal) / 100;
+    const total = subtotal - discountRate ;
 
     return (
         <form className="relative flex flex-col px-2  md:flex-row" onSubmit={reviewInvoiceHandler}>
@@ -150,7 +152,7 @@ const InvoiceForm = () => {
                         </dl>
                     </div>
                 </div>
-                <hr className='p-2' />
+                <hr className="p-2" />
                 <h1 className="text-center text-lg font-bold">NEW INVOICE</h1>
                 <div className="flex flex-col gap-2 pt-4 pb-8 p-4 bg-slate-50 rounded-lg">
                     <div className="flex flex-row p-1">
@@ -195,10 +197,9 @@ const InvoiceForm = () => {
                     <label className="font-medium " htmlFor="duedate">
                         Subject :
                     </label>
-
                     <textarea className="p-2  border  bg-slate-50 rounded" name="" rows="2" id="" cols="50"></textarea>
                 </div>
-                <hr  className='p-2 mt-4'/>
+                <hr className="p-2 mt-4" />
                 <table className="w-full p-2 text-left">
                     <thead>
                         <tr className="border-b border-gray-900/10 text-sm ">
@@ -255,12 +256,12 @@ const InvoiceForm = () => {
                                 ({discount || '0'}%)${discountRate.toFixed(2)}
                             </span>
                         </div>
-                        <div className="flex w-full justify-between md:w-1/2">
+                        {/* <div className="flex w-full justify-between md:w-1/2">
                             <span className="font-bold">Tax:</span>
                             <span>
                                 ({tax || '0'}%)${taxRate.toFixed(2)}
                             </span>
-                        </div>
+                        </div> */}
                         <div className="flex w-full justify-between border-t border-gray-900/10 pt-2 md:w-1/2">
                             <span className="font-bold">Total:</span>
                             <span className="font-bold">${total % 1 === 0 ? total : total.toFixed(2)}</span>
@@ -352,4 +353,4 @@ const InvoiceForm = () => {
     )
 }
 
-export default InvoiceForm
+export default InvoiceForm;

@@ -8,10 +8,10 @@ const InvoiceItem = ({ id, name, qty, rate, onDeleteItem, onEdtiItem }) => {
 
     return (
         <tr>
-            <td className="w-full">
+            <td className="">
                 
-                <div class=" col-12 mb-md-0 mb-3">
-                    <p class="mb-2 repeater-title">Item</p>
+                <div class=" ">
+                    <p class="mb-2 ">Item</p>
                     <select class="form-select item-details mb-3" cellData={{
                         placeholder: 'Item name',
                         type: 'text',
@@ -27,10 +27,10 @@ const InvoiceItem = ({ id, name, qty, rate, onDeleteItem, onEdtiItem }) => {
                         <option value="ABC Template">ABC Template</option>
                         <option value="App Development">App Development</option>
                     </select>
-                    <textarea class="form-control" rows="2" placeholder="Item Information"></textarea>
+                    <textarea class="form-control p-2" rows="2" placeholder="Item Information"></textarea>
                 </div>
             </td>
-            <td className="min-w-[65px] md:min-w-[80px]">
+            <td className="">
                 <InvoiceField
                     onEditItem={(event) => onEdtiItem(event)}
                     cellData={{
@@ -42,7 +42,7 @@ const InvoiceItem = ({ id, name, qty, rate, onDeleteItem, onEdtiItem }) => {
                     }}
                 />
             </td>
-            <td className="relative min-w-[100px] md:min-w-[150px] ">
+            <td className="relative w-[10px] ">
                 <InvoiceField
                     onEditItem={(event) => onEdtiItem(event)}
                     cellData={{
@@ -81,4 +81,4 @@ const InvoiceItem = ({ id, name, qty, rate, onDeleteItem, onEdtiItem }) => {
     )
 }
 
-export default InvoiceItem
+export default InvoiceItem;
