@@ -4,6 +4,7 @@ import { toPng } from 'html-to-image'
 import { jsPDF } from 'jspdf'
 
 const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice }) => {
+    const { total } = invoiceInfo;
     function closeModal() {
         setIsOpen(false)
     }
@@ -130,7 +131,7 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                             >
                                                 <th>ITEM</th>
                                                 <th className="text-center">QTY</th>
-                                                <th className="text-right">PRICE</th>
+                                                <th className="text-right">RATE</th>
                                                 <th className="text-right">AMOUNT</th>
                                             </tr>
                                         </thead>
@@ -159,18 +160,16 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                             <span className="font-bold">Discount:</span>
                                             <span>${invoiceInfo.discountRate.toFixed(2)}</span>
                                         </div>
-                                        <div className="flex w-full justify-between">
+                                        {/* <div className="flex w-full justify-between">
                                             <span className="font-bold">Tax:</span>
                                             <span>${invoiceInfo.taxRate.toFixed(2)}</span>
-                                        </div>
+                                        </div> */}
                                         <div className="flex w-full justify-between border-t border-black/10 py-2">
                                             <span className="font-bold">Total:</span>
                                             <span className="font-bold">
-                                                $
-                                                {invoiceInfo.total % 1 === 0
-                                                    ? invoiceInfo.total
-                                                    : invoiceInfo.total.toFixed(2)}
+                                                {total !== undefined ? (total % 1 === 0 ? total : total.toFixed(0)) : '0.00'}
                                             </span>
+
                                         </div>
                                     </div>
                                 </div>

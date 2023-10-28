@@ -6,19 +6,19 @@ import incrementString from './helpers/incrementString'
 import Custlistbox from './components/Custlistbox'
 import logo from '../../assets/icons8-invoice-94.png'
 
-const date = new Date()
-const today = date.toLocaleDateString('en-GB', {
-    month: 'numeric',
-    day: 'numeric',
-    year: 'numeric'
-})
+// const date = new Date()
+// const today = date.toLocaleDateString('en-GB', {
+//     month: 'numeric',
+//     day: 'numeric',
+//     year: 'numeric'
+// })
 
 const InvoiceForm = () => {
-    const [isOpen, setIsOpen] = useState(false)
-    const [discount, setDiscount] = useState('')
-    const [tax, setTax] = useState('')
-    const [invoiceNumber, setInvoiceNumber] = useState('0001')
-    const [customerName, setCustomerName] = useState('')
+    const [isOpen, setIsOpen] = useState(false);
+    const [discount, setDiscount] = useState('');
+    const [tax, setTax] = useState(''); // Uncommented tax state
+    const [invoiceNumber, setInvoiceNumber] = useState('0001');
+    const [customerName, setCustomerName] = useState('');
     const [items, setItems] = useState([
         {
             id: uid(6),
@@ -26,15 +26,15 @@ const InvoiceForm = () => {
             qty: 1,
             rate: '1.00'
         }
-    ])
+    ]);
 
     const reviewInvoiceHandler = (event) => {
-        event.preventDefault()
-        setIsOpen(true)
-    }
+        event.preventDefault();
+        setIsOpen(true);
+    };
 
     const addNextInvoiceHandler = () => {
-        setInvoiceNumber((prevNumber) => incrementString(prevNumber))
+        setInvoiceNumber((prevNumber) => incrementString(prevNumber));
         setItems([
             {
                 id: uid(6),
@@ -42,11 +42,11 @@ const InvoiceForm = () => {
                 qty: 1,
                 rate: '1.00'
             }
-        ])
-    }
+        ]);
+    };
 
     const addItemHandler = () => {
-        const id = uid(6)
+        const id = uid(6);
         setItems((prevItem) => [
             ...prevItem,
             {
@@ -55,41 +55,42 @@ const InvoiceForm = () => {
                 qty: 1,
                 rate: '1.00'
             }
-        ])
-    }
+        ]);
+    };
 
     const deleteItemHandler = (id) => {
-        setItems((prevItem) => prevItem.filter((item) => item.id !== id))
-    }
+        setItems((prevItem) => prevItem.filter((item) => item.id !== id));
+    };
 
     const edtiItemHandler = (event) => {
         const editedItem = {
             id: event.target.id,
             name: event.target.name,
             value: event.target.value
-        }
+        };
 
-        const newItems = items.map((items) => {
-            for (const key in items) {
-                if (key === editedItem.name && items.id === editedItem.id) {
-                    items[key] = editedItem.value
+        const newItems = items.map((item) => {
+            for (const key in item) {
+                if (key === editedItem.name && item.id === editedItem.id) {
+                    item[key] = editedItem.value;
                 }
             }
-            return items
-        })
+            return item;
+        });
 
-        setItems(newItems)
-    }
+        setItems(newItems);
+    };
 
     const subtotal = items.reduce((prev, curr) => {
-        if (curr.name.trim().length > 0) return prev + Number(curr.rate * Math.floor(curr.qty))
-        else return prev
-    }, 0)
-    const taxRate = parseFloat(tax); 
-    const discountRate = parseFloat(discount); 
-    // const taxRate = (tax * subtotal) / 100;
-    // const discountRate = (discount * subtotal) / 100;
-    const total = subtotal - discountRate ;
+        if (curr.name.trim().length > 0) return prev + Number(curr.rate * Math.floor(curr.qty));
+        else return prev;
+    }, 0);
+
+    const taxRate = parseFloat(tax); // Parse tax rate as a float
+    const discountRate = (discount * subtotal) / 100;
+    const taxAmount = (taxRate * subtotal) / 100; // Calculate tax amount
+    const total = subtotal - discountRate + taxAmount || 0; // Include tax amount in total
+
 
     return (
         <form className="relative flex flex-col px-2  md:flex-row" onSubmit={reviewInvoiceHandler}>
@@ -116,7 +117,7 @@ const InvoiceForm = () => {
                                 <div className="input-group  disabled w-px-150">
                                     <span className="input-group-text">#</span>
                                     <input
-                                        type="yexy"
+                                        type="number"
                                         className="form-control"
                                         disabled
                                         placeholder="3905"
@@ -129,26 +130,26 @@ const InvoiceForm = () => {
                                 <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0 mt-2.5">
                                     <span className="fw-normal">Date:</span>
                                 </dt>
-                                <dd className="col-sm-6 d-flex justify-content-md-end pe-0 ps-0 ps-sm-2">
+                                <dd className="col-sm-6 d-flex justify-content-md-end  pe-0 ps-0 ps-sm-2">
                                     <input
                                         type="date"
-                                        className="form-control w-px-150 date-picker"
-                                        placeholder="YYYY-MM-DD"
+                                        className="form-control w-px-150 text-sm date-picker"
+                                        
                                     />
                                 </dd>
                             </div>
-                            <div className="flex mt-2">
+                            {/* <div className="flex mt-2">
                                 <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0 mt-2.5">
                                     <span className="fw-normal">Due Date:</span>
                                 </dt>
                                 <dd className="col-sm-6 d-flex justify-content-md-end pe-0 ps-0 ps-sm-2">
                                     <input
                                         type="date"
-                                        className="form-control w-px-150 date-picker"
-                                        placeholder="YYYY-MM-DD"
+                                        className="form-control w-px-150 text-sm date-picker"
+                                        
                                     />
                                 </dd>
-                            </div>
+                            </div> */}
                         </dl>
                     </div>
                 </div>
@@ -300,7 +301,6 @@ const InvoiceForm = () => {
                             invoiceNumber,
                             customerName,
                             subtotal,
-                            taxRate,
                             discountRate,
                             total
                         }}
