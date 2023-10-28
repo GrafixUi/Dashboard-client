@@ -108,15 +108,15 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                 <h1 className="text-center text-lg font-bold text-gray-900">INVOICE</h1>
                                 <div className="mt-6 text-xs">
                                     <div className="mb-4 flex flex-col">
-                                        <div className='mb-2'>
+                                        <div className="mb-2">
                                             <span className="font-medium">Invoice Number :</span>
                                             <span>{invoiceInfo.invoiceNumber}</span>
                                         </div>
-                                        <div className='mb-2'>
+                                        <div className="mb-2">
                                             <span className="font-medium">Customer Name :</span>
                                             <span>{invoiceInfo.customerName}</span>
                                         </div>
-                                        <div className='mb-2'>
+                                        <div className="mb-2">
                                             <span className="font-medium">Billing Address :</span>
                                             <span>{invoiceInfo.billingaddress}</span>
                                         </div>
@@ -124,8 +124,10 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
 
                                     <table className="w-full text-left">
                                         <thead>
-                                            <tr className="border-y border-black/10
-                                             text-xs md:text-sm">
+                                            <tr
+                                                className="border-y border-black/10
+                                             text-xs md:text-sm"
+                                            >
                                                 <th>ITEM</th>
                                                 <th className="text-center">QTY</th>
                                                 <th className="text-right">PRICE</th>
@@ -187,7 +189,8 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                     >
                                         <path
                                             strokeLinecap="round"
-                                            strokeLinejoin="round"z
+                                            strokeLinejoin="round"
+                                            z
                                             strokeWidth={2}
                                             d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
                                         />

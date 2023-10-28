@@ -2,15 +2,14 @@ import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import logo from '../../assets/checklist.gif'
 import { FiEye } from 'react-icons/fi'
-import axios from 'axios';
 
 export default function Login() {
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
         username: '',
         password: '',
+        confirmPassword: ''
     })
-
     const handleChange = (e) => {
         const { name, value } = e.target
         setFormData({
@@ -18,27 +17,28 @@ export default function Login() {
             [name]: value
         })
     }
+
     const handleSubmit = async (e) => {
         e.preventDefault()
 
-        if (!formData.username || !formData.password) {
-            console.error('Username and password are required.');
-            return;
-        }
-
         try {
-            const response = await axios.post('http://localhost:5000/api/login', formData)
+            const response = await fetch('http://localhost:5000/api/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
 
-            if (response.status === 200) {
-               console.log("logged In");
-               navigate('/dashboard');
+            if (response.ok) {
+                navigate('/')
             } else {
-                console.error('login failed')
+                console.error('Registration failed')
             }
         } catch (error) {
-            console.error('Error during login:', error)
+            console.error('Error during registration:', error)
         }
-    };
+    }
 
     return (
         <div className=" login-main">
@@ -51,11 +51,11 @@ export default function Login() {
                                 <h2 className="text-body text-[30px]  font-semibold mt-2 mb-2">Dashboard</h2>
                             </div>
                             <p className="mb-4 text-center text-sm">
-                                Please sign-in to your account and start the adventure
+                                Please Register-in to your account and start the adventure
                             </p>
                             <form id="formAuthentication" className="mb-3 text-sm" onSubmit={handleSubmit}>
                                 <div className="mb-3">
-                                    <label htmlFor="email" className="form-label">
+                                    <label htmlFor="username" className="form-label">
                                         Username
                                     </label>
                                     <input
@@ -72,7 +72,7 @@ export default function Login() {
                                 <div className="mb-3 form-password-toggle">
                                     <div className="d-flex justify-content-between ">
                                         <label className="form-label" htmlFor="password">
-                                            Password
+                                            Create Password
                                         </label>
                                     </div>
                                     <div className="input-group input-group-merge">
@@ -91,25 +91,42 @@ export default function Login() {
                                         </span>
                                     </div>
                                 </div>
-                                <div className="mb-3">
-                                    <Link to="">
-                                        <small>Forgot Password?</small>
-                                    </Link>
+                                <div className="mb-3 form-password-toggle">
+                                    <div className="d-flex justify-content-between ">
+                                        <label className="form-label" htmlFor="confirmPassword">
+                                            Re-Enter Password
+                                        </label>
+                                    </div>
+                                    <div className="input-group input-group-merge">
+                                        <input
+                                            type="password"
+                                            id="confirmPassword"
+                                            className="form-control placeholder:text-sm placeholder:opacity-25"
+                                            name="confirmPassword"
+                                            value={formData.confirmPassword}
+                                            onChange={handleChange}
+                                            placeholder="Re-enter your Password"
+                                            aria-describedby="confirmPassword"
+                                        />
+                                        <span className="input-group-text cursor-pointer">
+                                            <FiEye />
+                                        </span>
+                                    </div>
                                 </div>
                                 <div className="mb-3 flex justify-center">
                                     <button
                                         className="bg-green-600 rounded-lg p-2 text-white text-center w-52"
                                         type="submit"
                                     >
-                                        Sign in
+                                        Register
                                     </button>
                                 </div>
                             </form>
 
                             <p className="text-center text-sm">
-                                <span>New on our platform?</span>
-                                <Link to="/register">
-                                    <span className="cursor-pointer"> Create an account</span>
+                                <span>Already have an Account </span>
+                                <Link to="/">
+                                    <span className="cursor-pointer"> Sign In</span>
                                 </Link>
                             </p>
                         </div>
