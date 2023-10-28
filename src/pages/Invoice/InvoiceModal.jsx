@@ -1,10 +1,11 @@
-import React, { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { toPng } from 'html-to-image'
-import { jsPDF } from 'jspdf'
+import React, { Fragment } from 'react';
+import { Dialog, Transition } from '@headlessui/react';
+import { toPng } from 'html-to-image';
+import { jsPDF } from 'jspdf';
+import logo from '../../assets/icons8-invoice-94.png';
 
 const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice }) => {
-    const { total } = invoiceInfo;
+    const { total } = invoiceInfo
     function closeModal() {
         setIsOpen(false)
     }
@@ -104,7 +105,58 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                         leaveFrom="opacity-100 scale-100"
                         leaveTo="opacity-0 scale-95"
                     >
-                        <div className="my-8 inline-block w-full max-w-md transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+                        <div className="my-8 inline-block w-full md:w-2/3 transform overflow-hidden rounded-lg bg-white text-left align-middle shadow-xl transition-all">
+                            <div className="grid grid-cols-2 my-6 flex-1 space-y-2 text-xs  rounded-md bg-white p-4 shadow-sm sm:space-y-4 md:p-6">
+                                <div>
+                                    <div className="w-72">
+                                        <div className="flex mb-4 gap-2 align-items-center">
+                                            <img src={logo} alt="" />
+
+                                            <span className=" fw-bold fs-4"> Dashboard </span>
+                                        </div>
+                                        <p className="mb-2">Office 149, 450 South Brand Brooklyn</p>
+                                        <p className="mb-2">San Diego County, CA 91905, USA</p>
+                                        <p className="mb-3">+1 (123) 456 7891, +44 (876) 543 2198</p>
+                                    </div>
+                                </div>
+                                <div className="">
+                                    <dl className="row mb-2">
+                                        <dt className="col-sm-6 mb-2 mt-1 mb-sm-0 text-md-end ps-0">
+                                            <span className="font-bold text-capitalize mb-0 text-nowrap text-base">Invoice</span>
+                                        </dt>
+                                        <dd className="col-sm-6">
+                                            <div className="input-group rounded-md bg-slate-200 disabled w-px-100">
+                                                <span className="p-2 items-center flex ">#</span>
+                                               <p className="p-1 font-medium flex items-center text-[15px] " disabled>123</p>
+                                            </div>
+                                        </dd>
+                                        <div className="flex mt-2">
+                                            <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0 mt-2.5">
+                                                <span className="fw-normal">Date:</span>
+                                            </dt>
+                                            <dd className="col-sm-6 d-flex justify-content-md-end  pe-0 ps-0 ps-sm-2">
+                                                <input
+                                                    type="date"
+                                                    className="form-control disabled w-px-150 text-sm date-picker" disabled
+                                                />
+                                            </dd>
+                                        </div>
+                                        {/* <div className="flex mt-2">
+                                <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0 mt-2.5">
+                                    <span className="fw-normal">Due Date:</span>
+                                </dt>
+                                <dd className="col-sm-6 d-flex justify-content-md-end pe-0 ps-0 ps-sm-2">
+                                    <input
+                                        type="date"
+                                        className="form-control w-px-150 text-sm date-picker"
+                                        
+                                    />
+                                </dd>
+                            </div> */}
+                                    </dl>
+                                </div>
+                            </div>
+
                             <div className="p-4" id="print">
                                 <h1 className="text-center text-lg font-bold text-gray-900">INVOICE</h1>
                                 <div className="mt-6 text-xs">
@@ -167,9 +219,12 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                         <div className="flex w-full justify-between border-t border-black/10 py-2">
                                             <span className="font-bold">Total:</span>
                                             <span className="font-bold">
-                                                {total !== undefined ? (total % 1 === 0 ? total : total.toFixed(0)) : '0.00'}
+                                                {total !== undefined
+                                                    ? total % 1 === 0
+                                                        ? total
+                                                        : total.toFixed(0)
+                                                    : '0.00'}
                                             </span>
-
                                         </div>
                                     </div>
                                 </div>
