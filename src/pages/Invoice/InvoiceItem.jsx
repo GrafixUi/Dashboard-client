@@ -11,7 +11,6 @@ const InvoiceItem = ({ id, name, qty, rate, onDeleteItem, onEdtiItem }) => {
             <td className="">
                 
                 <div class=" ">
-                    <p class="mb-2 ">Item</p>
                     <select class="form-select item-details mb-3" cellData={{
                         placeholder: 'Item name',
                         type: 'text',

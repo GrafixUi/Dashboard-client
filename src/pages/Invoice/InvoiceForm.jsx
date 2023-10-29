@@ -196,7 +196,7 @@ const InvoiceForm = () => {
                     <textarea className="p-2  border  bg-slate-50 rounded" name="" rows="2" id="" cols="50"></textarea>
                 </div>
                 <hr className="p-2 mt-4" />
-                <table className="w-full p-2 text-left">
+                <table className="w-full p-1 text-left">
                     <thead>
                         <tr className="border-b border-gray-900/10 text-sm ">
                             <th>ITEM DETAILS</th>
@@ -241,7 +241,7 @@ const InvoiceForm = () => {
                             placeholder="Thanks for your business"
                         ></textarea>
                     </div>
-                    <div className="flex flex-col items-end space-y-2 pt-6">
+                    <div className="flex flex-col items-end space-y-2 pt-6 ">
                         <div className="flex w-full justify-between md:w-1/2">
                             <span className="font-bold">Subtotal:</span>
                             <span>${subtotal.toFixed(2)}</span>
@@ -258,7 +258,7 @@ const InvoiceForm = () => {
                                 ({tax || '0'}%)${taxRate.toFixed(2)}
                             </span>
                         </div> */}
-                        <div className="flex w-full justify-between border-t border-gray-900/10 pt-2 md:w-1/2">
+                        <div className="flex w-full justify-between border-t border-gray-900/10  md:w-1/2 text-lg">
                             <span className="font-bold">Total:</span>
                             <span className="font-bold">${total % 1 === 0 ? total : total.toFixed(2)}</span>
                         </div>
@@ -267,7 +267,7 @@ const InvoiceForm = () => {
                 <div className="bg-slate-50 p-4 rounded">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
-                            Customer Notes :
+                        Terms and Conditions :
                         </label>
                         <textarea
                             className="p-2 mt-3 border bg-slate-50 rounded"
