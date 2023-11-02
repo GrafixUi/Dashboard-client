@@ -1,21 +1,18 @@
-import { Fragment, useState } from 'react';
-import { Listbox, Transition } from '@headlessui/react';
-import { Link } from 'react-router-dom';
+import { Fragment, useState, useEffect } from 'react'
+import { Listbox, Transition } from '@headlessui/react'
+import { Link } from 'react-router-dom'
 
-
-const people = [
-    {
-        id: 1,
-        name: 'Wade Cooper'
-    }
-]
 
 function classNames(...classes) {
     return classes.filter(Boolean).join(' ')
 }
 
-export default function Example() {
-    const [selected, setSelected] = useState(people[0])
+function Custlistbox({ customers, fetchCustomers }) {
+    const [selected, setSelected] = useState(null); // Initialize selected as null
+
+    useEffect(() => {
+        fetchCustomers();
+    }, [fetchCustomers]);
 
     return (
         <Listbox value={selected} onChange={setSelected}>
@@ -23,9 +20,18 @@ export default function Example() {
                 <>
                     <div className="relative ">
                         <Listbox.Button className="relative w-full cursor-default rounded-md bg-white py-1.5 pl-3 pr-10 text-left text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500 sm:text-sm sm:leading-6">
-                            <span className="flex items-center">
-                                <span className="ml-3 block truncate">{selected.name}</span>
-                            </span>
+                            <div>
+                                {selected ? (
+                                    <span className="flex items-center">
+                                        <span className="ml-3 block truncate">
+                                            {selected.firstName} {selected.lastName}
+                                        </span>
+                                    </span>
+                                ) : (
+                                    <span>Select a customer</span>
+                                )}
+                            </div>
+
                             <span className="pointer-events-none absolute inset-y-0 right-0 ml-3 flex items-center pr-2">
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -52,28 +58,27 @@ export default function Example() {
                             leaveTo="opacity-0"
                         >
                             <Listbox.Options className="absolute z-10 mt-1 max-h-56 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm">
-                                {people.map((person) => (
+                                {customers.map((customer) => (
                                     <Listbox.Option
-                                        key={person.id}
+                                        key={customer.id}
                                         className={({ active }) =>
                                             classNames(
                                                 active ? 'bg-green-600 text-white' : 'text-gray-900',
                                                 'relative cursor-default select-none py-2 pl-3 pr-9'
                                             )
                                         }
-                                        value={person}
+                                        value={customer}
                                     >
                                         {({ selected, active }) => (
                                             <>
                                                 <div className="flex items-center">
-                                                    
                                                     <span
                                                         className={classNames(
                                                             selected ? 'font-semibold' : 'font-normal',
                                                             'ml-3 block truncate'
                                                         )}
                                                     >
-                                                        {person.name}
+                                                        {customer.firstName} {customer.lastName}
                                                     </span>
                                                 </div>
 
@@ -88,13 +93,13 @@ export default function Example() {
                                                             xmlns="http://www.w3.org/2000/svg"
                                                             fill="none"
                                                             viewBox="0 0 24 24"
-                                                            stroke-width="1.5"
+                                                            strokeWidth="1.5"
                                                             stroke="currentColor"
-                                                            class="w-6 h-6"
+                                                            className="w-6 h-6"
                                                         >
                                                             <path
-                                                                stroke-linecap="round"
-                                                                stroke-linejoin="round"
+                                                                strokeLinecap="round"
+                                                                strokeLinejoin="round"
                                                                 d="M4.5 12.75l6 6 9-13.5"
                                                             />
                                                         </svg>
@@ -104,11 +109,11 @@ export default function Example() {
                                         )}
                                     </Listbox.Option>
                                 ))}
-                                <div className='text-center mt-3 mb-2'>
+                                <div className="text-center mt-3 mb-2">
                                     <Link to="/addcustomer">
                                         <button
                                             type="submit"
-                                            className="rounded-md  px-3 py-2 text-xs font-medium text-white shadow-sm bg-green-600 "
+                                            className="rounded-md px-3 py-2 text-xs font-medium text-white shadow-sm bg-green-600"
                                         >
                                             <h1>Add Customer</h1>
                                         </button>
@@ -122,3 +127,15 @@ export default function Example() {
         </Listbox>
     )
 }
+
+const mapStateToProps = (state) => ({
+    customers: state.customers.customers,
+    loading: state.customers.loading,
+    error: state.customers.error
+})
+
+const mapDispatchToProps = {
+    fetchCustomers,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Custlistbox)

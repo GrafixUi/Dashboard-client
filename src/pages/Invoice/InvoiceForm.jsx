@@ -1,22 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { uid } from 'uid'
 import InvoiceItem from './InvoiceItem'
 import InvoiceModal from './InvoiceModal'
 import incrementString from './helpers/incrementString'
-import Custlistbox from './components/Custlistbox'
+// import Custlistbox from './components/Custlistbox'
 import logo from '../../assets/icons8-invoice-94.png'
+import { fetchCustomers } from '../../Redux/actions/Customer/customers'
+import { connect } from 'react-redux'
 
-// const date = new Date()
-// const today = date.toLocaleDateString('en-GB', {
-//     month: 'numeric',
-//     day: 'numeric',
-//     year: 'numeric'
-// })
-
-const InvoiceForm = () => {
+function InvoiceForm({ customers, fetchCustomers }) {
     const [isOpen, setIsOpen] = useState(false)
     const [discount, setDiscount] = useState('')
-    const [tax, setTax] = useState('') // Uncommented tax state
+    const [tax, setTax] = useState('')
     const [invoiceNumber, setInvoiceNumber] = useState('0001')
     const [customerName, setCustomerName] = useState('')
     const [items, setItems] = useState([
@@ -86,10 +81,14 @@ const InvoiceForm = () => {
         else return prev
     }, 0)
 
-    const taxRate = parseFloat(tax) // Parse tax rate as a float
+    const taxRate = parseFloat(tax)
     const discountRate = (discount * subtotal) / 100
-    const taxAmount = (taxRate * subtotal) / 100 // Calculate tax amount
-    const total = subtotal - discountRate + taxAmount || 0 // Include tax amount in total
+    const taxAmount = (taxRate * subtotal) / 100
+    const total = subtotal - discountRate + taxAmount || 0
+
+    useEffect(() => {
+        fetchCustomers()
+    }, [fetchCustomers])
 
     return (
         <form className="relative flex flex-col px-2  md:flex-row" onSubmit={reviewInvoiceHandler}>
@@ -155,16 +154,61 @@ const InvoiceForm = () => {
                         <label htmlFor="customername" className="text-sm mt-2 text-red-500 font-medium ">
                             Customer Name *
                         </label>
-                        <div className="ml-2 w-1/2 ">
-                            <Custlistbox />
+                        <div className="ml-2 w-1/2">
+                            <select
+                                className="text-sm leading-6 bg-white rounded p-2 w-full text-gray-700 sm:col-span-2 sm:mt-0"
+                                value={customerName}
+                                onChange={(e) => setCustomerName(e.target.value)}
+                            >
+                                <option value="">Select a customer</option>
+                                {customers.map((customer) => (
+                                    <option key={customer.id} value={`${customer.firstName} ${customer.lastName}`}>
+                                        {customer.firstName} {customer.lastName}
+                                    </option>
+                                ))}
+                            </select>
                         </div>
                     </div>
-                    <div className=" grid grid-cols-2 p-2 mt-4">
+                    <div className="grid grid-cols-2 p-2 mt-4">
                         <div>
-                            <h3 className="font-medium">Billing Address </h3>
+                            <h3 className="font-bold text-sm">Billing Address</h3>
+                            {customers.map((customer) => {
+                                if (`${customer.firstName} ${customer.lastName}` === customerName) {
+                                    return (
+                                        <address className="mt-1" key={customer.id}>
+                                            {customer.attention}
+                                            <br />
+                                            {customer.address}
+                                            <br />
+                                            {customer.city}
+                                            <br />
+                                            {customer.state_Province}
+                                            <br />
+                                            {customer.zip_Postalcode}
+                                            <br />
+                                            {customer.country_Region}
+                                        </address>
+                                    )
+                                }
+                                return null
+                            })}
                         </div>
                         <div>
-                            <h3 className="font-medium">Shipping Address </h3>
+                            <h3 className="font-bold text-sm">Shipping Address</h3>
+                                {customers.map((customer) => {
+                                    if (`${customer.firstName} ${customer.lastName}` === customerName) {
+                                        return (
+                                            <address key={customer.id}>
+                                                {customer.shippingAddress}
+                                                <br />
+                                                {customer.shippingCity}, {customer.shippingState}, {customer.shippingZip}
+                                                <br />
+                                                {customer.shippingCountry}
+                                            </address>
+                                        )
+                                    }
+                                    return null
+                                })}
                         </div>
                     </div>
                 </div>
@@ -267,7 +311,7 @@ const InvoiceForm = () => {
                 <div className="bg-slate-50 p-4 rounded">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
-                        Terms and Conditions :
+                            Terms and Conditions :
                         </label>
                         <textarea
                             className="p-2 mt-3 border bg-slate-50 rounded"
@@ -348,4 +392,14 @@ const InvoiceForm = () => {
     )
 }
 
-export default InvoiceForm
+const mapStateToProps = (state) => ({
+    customers: state.customers.customers,
+    loading: state.customers.loading,
+    error: state.customers.error
+})
+
+const mapDispatchToProps = {
+    fetchCustomers
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceForm)

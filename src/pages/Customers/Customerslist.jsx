@@ -12,7 +12,7 @@ function Customers({ customers, fetchCustomers, deleteCustomer }) {
 
     useEffect(() => {
         fetchCustomers()
-    }, [fetchCustomers])
+    }, [fetchCustomers]);
 
     const handleDeleteCustomer = (kad_id) => {
         if (window.confirm('Are you sure you want to delete this customer?')) {
