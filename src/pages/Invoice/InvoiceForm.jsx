@@ -7,7 +7,7 @@ import { fetchCustomers } from '../../Redux/actions/Customer/customers'
 import { fetchItems } from '../../Redux/actions/Items/items'
 import { connect } from 'react-redux'
 
-function InvoiceForm({ customers, fetchCustomers }) {
+function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
     const [isOpen, setIsOpen] = useState(false)
     const [selectedItem, setSelectedItem] = useState('')
     const [itemDetails, setItemDetails] = useState({})
@@ -19,15 +19,12 @@ function InvoiceForm({ customers, fetchCustomers }) {
     const [discountRate, setDiscountRate] = useState(0)
     const [taxAmount, setTaxAmount] = useState(0)
     const [total, setTotal] = useState(0)
+    const [items, setItems] = useState([])
 
-    const [items, setItems] = useState([
-        {
-            id: uid(6),
-            name: '',
-            qty: 1,
-            rate: '1.00'
-        }
-    ])
+    useEffect(() => {
+        fetchItems()
+    }, [fetchItems])
+
 
     const reviewInvoiceHandler = (event) => {
         event.preventDefault()
@@ -36,66 +33,34 @@ function InvoiceForm({ customers, fetchCustomers }) {
 
     const addNextInvoiceHandler = () => {
         setInvoiceNumber((prevNumber) => incrementString(prevNumber))
-        setItems([
-            {
-                id: uid(6),
-                name: '',
-                qty: 1,
-                rate: '1.00'
-            }
-        ])
     }
     const addItemHandler = () => {
-        const id = uid(6)
-        setItems((prevItem) => [
-            ...prevItem,
+        setItems((prevItems) => [
+            ...prevItems,
             {
-                id: id,
-                name: '',
+                id: uid(),
                 qty: 1,
-                rate: '1.00'
+                rate: 0
             }
         ])
-    }
-    const handleItemSelect = (e) => {
-        const selectedName = e.target.value
-        const selectedItem = items.find((itemOption) => itemOption.name === selectedName)
-
-        if (selectedItem) {
-            setSelectedItem(selectedName)
-            setItemDetails(selectedItem)
-        } else {
-            setSelectedItem('')
-            setItemDetails({})
-        }
     }
 
     const deleteItemHandler = (id) => {
-        setItems((prevItems) => prevItems.filter((item) => item.id !== id))
-    }
+        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
+      };
 
     useEffect(() => {
-        console.log("Items:", items);
-        console.log("Discount:", discount);
-        console.log("Tax:", tax);
-    
         const newSubtotal = items.reduce((prev, curr) => {
-            if (curr.name.trim().length > 0) {
-                return prev + Number(curr.rate) * Math.floor(curr.qty);
+            if (curr.name?.trim().length > 0) {
+                return prev + Number(curr.rate) * Math.floor(curr.qty)
             }
-            return prev;
-        }, 0);
-        
-    
-        console.log("New Subtotal:", newSubtotal);
-    
-        setSubtotal(newSubtotal);
-        setDiscountRate((discount * newSubtotal) / 100);
-        setTaxAmount((tax * newSubtotal) / 100);
-        setTotal(newSubtotal - (discount * newSubtotal) / 100 + (tax * newSubtotal) / 100);
-    }, [items, discount, tax]);
-    
-    
+            return prev
+        }, 0)
+        setSubtotal(newSubtotal)
+        setDiscountRate((discount * newSubtotal) / 100)
+        setTaxAmount((tax * newSubtotal) / 100)
+        setTotal(newSubtotal - (discount * newSubtotal) / 100 + (tax * newSubtotal) / 100)
+    }, [items, discount, tax])
 
     useEffect(() => {
         fetchCustomers()
@@ -211,10 +176,10 @@ function InvoiceForm({ customers, fetchCustomers }) {
                         </div>
                     </div>
                 </div>
-                <div className="px-2 py-2 sm:grid sm:grid-cols-2 sm:gap-4 sm:px-0 ">
+                <div className="px-2 py-2 sm:grid sm:grid-cols-2 sm:gap-2 sm:px-0 ">
                     <div className="flex items-center px-1 gap-2">
                         <h2 className="text-sm font-medium leading-6 text-gray-900 ">Terms </h2>
-                        <select className="text-sm leading-6 bg-slate-100 rounded p-2 w-full text-gray-700 sm:col-span-2 sm:mt-0">
+                        <select className="text-sm leading-6 bg-slate-100 rounded p-2  text-gray-700 sm:col-span-2 sm:mt-0">
                             <option value="DueonReceipt">Due on Receipt</option>
                             <option value="DueonReceipt">Recurring</option>
                         </select>
@@ -252,37 +217,41 @@ function InvoiceForm({ customers, fetchCustomers }) {
                     <tbody>
                         {items.map((item) => (
                             <tr key={item.id}>
-                                <td className="w-96">
+                                <td className="">
                                     <div>
                                         <select
-                                            className="text-sm leading-6 bg-white border rounded p-2 w-full text-gray-700 sm:col-span-2 sm:mt-0"
+                                            className="text-sm leading-6 bg-white border rounded p-2 text-gray-700 w-full"
                                             value={item.name}
-                                            onChange={(e) => handleItemSelect(e)}
+                                            
                                         >
                                             <option value="">Select an Item</option>
-                                            {items.map((item) => (
-                                                <option key={item.id} value={item.name}>
-                                                    {item.name}
+                                            {items.map((itemOption) => (
+                                                <option key={itemOption.id} value={itemOption.name}>
+                                                    {itemOption.name}
                                                 </option>
                                             ))}
                                         </select>
-
                                         <textarea
-                                            className="form-control p-2 mt-2"
+                                            className="form-control p-1 mt-2"
                                             rows="2"
                                             placeholder="Item Information"
                                         ></textarea>
                                     </div>
                                 </td>
                                 <td className="">
-                                    <input className="p-2 border rounded-lg" type="number" value={1} />
-                                </td>
-                                <td className="relative w-[10px]">
                                     <input
                                         className="p-2 border rounded-lg"
                                         type="number"
-                                        value={itemDetails.rate || 0}
-                                        onChange={(e) => setItemDetails({ ...itemDetails, rate: e.target.value })}
+                                        value={item.qty}
+                                       
+                                    />
+                                </td>
+                                <td className="">
+                                    <input
+                                        className="p-2 border rounded-lg"
+                                        type="number"
+                                        value={item.rate}
+                                       
                                     />
                                 </td>
                                 <td className="pl-5 items-center justify-center">
@@ -298,14 +267,14 @@ function InvoiceForm({ customers, fetchCustomers }) {
                     </tbody>
                 </table>
                 <button
-                    className="rounded-md bg-green-500 px-4 py-2 text-sm text-white shadow-sm hover:bg-blue-600"
+                    className="rounded-md bg-green-500 px-4 py-2 text-sm text-white shadow-sm "
                     type="button"
                     onClick={addItemHandler}
                 >
                     Add Item
                 </button>
-                <div></div>
-                <div className="grid grid-cols-2">
+                
+                <div className="grid grid-cols-2 mt-4">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
                             Customer Notes :
@@ -319,6 +288,7 @@ function InvoiceForm({ customers, fetchCustomers }) {
                             placeholder="Thanks for your business"
                         ></textarea>
                     </div>
+
                     <div className="flex flex-col items-end space-y-2 pt-6 ">
                         <div className="flex w-full justify-between md:w-1/2">
                             <span className="font-bold">Subtotal:</span>
@@ -336,13 +306,13 @@ function InvoiceForm({ customers, fetchCustomers }) {
                         </div>
                     </div>
                 </div>
-                <div className="bg-slate-50 p-4 rounded">
+                <div className="bg-slate-50 p-4 pt-2 rounded">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
                             Terms and Conditions :
                         </label>
                         <textarea
-                            className="p-2 mt-3 border bg-slate-50 rounded"
+                            className="p-2 mt-3 border bg-slate-100 rounded"
                             name=""
                             id=""
                             cols="10"
@@ -390,7 +360,6 @@ function InvoiceForm({ customers, fetchCustomers }) {
                                     value={discount}
                                     onChange={(event) => setDiscount(event.target.value)}
                                 />
-
                                 <span className="rounded-r-md bg-gray-200 py-2 px-4 text-gray-500 shadow-sm">%</span>
                             </div>
                         </div>
@@ -411,7 +380,6 @@ function InvoiceForm({ customers, fetchCustomers }) {
                                     value={tax}
                                     onChange={(event) => setTax(event.target.value)}
                                 />
-
                                 <span className="rounded-r-md bg-gray-200 py-2 px-4 text-gray-500 shadow-sm">%</span>
                             </div>
                         </div>
@@ -424,6 +392,7 @@ function InvoiceForm({ customers, fetchCustomers }) {
 
 const mapStateToProps = (state) => ({
     customers: state.customers.customers,
+    items: state.items.items,
     loading: state.customers.loading,
     error: state.customers.error
 })
