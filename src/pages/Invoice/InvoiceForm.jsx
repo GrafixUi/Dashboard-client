@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react'
-import { uid } from 'uid'
 import InvoiceModal from './InvoiceModal'
-import incrementString from './helpers/incrementString'
 import logo from '../../assets/icons8-invoice-94.png'
 import { fetchCustomers } from '../../Redux/actions/Customer/customers'
 import { fetchItems } from '../../Redux/actions/Items/items'
 import { connect } from 'react-redux'
 
-function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
+function InvoiceForm({ customers, fetchCustomers, fetchItems }) {
     const [isOpen, setIsOpen] = useState(false)
-    const [selectedItem, setSelectedItem] = useState('')
-    const [itemDetails, setItemDetails] = useState({})
     const [discount, setDiscount] = useState('')
     const [tax, setTax] = useState('')
     const [invoiceNumber, setInvoiceNumber] = useState('0001')
@@ -21,33 +17,11 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
     const [total, setTotal] = useState(0)
     const [items, setItems] = useState([])
 
-    useEffect(() => {
-        fetchItems()
-    }, [fetchItems])
-
-
+   
     const reviewInvoiceHandler = (event) => {
         event.preventDefault()
         setIsOpen(true)
     }
-
-    const addNextInvoiceHandler = () => {
-        setInvoiceNumber((prevNumber) => incrementString(prevNumber))
-    }
-    const addItemHandler = () => {
-        setItems((prevItems) => [
-            ...prevItems,
-            {
-                id: uid(),
-                qty: 1,
-                rate: 0
-            }
-        ])
-    }
-
-    const deleteItemHandler = (id) => {
-        setItems((prevItems) => prevItems.filter((item) => item.id !== id));
-      };
 
     useEffect(() => {
         const newSubtotal = items.reduce((prev, curr) => {
@@ -85,16 +59,16 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                     <div className="">
                         <dl className="row mb-2">
                             <dt className="col-sm-6 mb-2 mb-sm-0 text-md-end ps-0">
-                                <span className="h4 text-capitalize mb-0 text-nowrap">Invoice</span>
+                                <span className="h4 text-capitalize mb-0 ">Invoice</span>
                             </dt>
                             <dd className="col-sm-6">
-                                <div className="input-group  disabled w-px-150">
+                                <div className="input-group disabled w-px-150">
                                     <span className="input-group-text">#</span>
                                     <input
                                         type="number"
                                         className="form-control"
                                         disabled
-                                        placeholder="3905"
+                                        placeholder="0001"
                                         value=""
                                         id="invoiceId"
                                     />
@@ -115,7 +89,7 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                 <h1 className="text-center text-lg font-bold">NEW INVOICE</h1>
                 <div className="flex flex-col gap-2 pt-4 pb-8 p-4 bg-slate-50 rounded-lg">
                     <div className="flex flex-row p-1">
-                        <label htmlFor="customername" className="text-sm mt-2 text-red-500 font-medium ">
+                        <label htmlFor="customername" className="text-sm mt-1 text-red-500 font-medium ">
                             Customer Name *
                         </label>
                         <div className="ml-2 w-1/2">
@@ -161,15 +135,7 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                             <h3 className="font-bold text-sm">Shipping Address</h3>
                             {customers.map((customer) => {
                                 if (`${customer.firstName} ${customer.lastName}` === customerName) {
-                                    return (
-                                        <address key={customer.id}>
-                                            {customer.shippingAddress}
-                                            <br />
-                                            {customer.shippingCity}, {customer.shippingState}, {customer.shippingZip}
-                                            <br />
-                                            {customer.shippingCountry}
-                                        </address>
-                                    )
+                                    return <address key={customer.id}>{customer.shippingAddress}</address>
                                 }
                                 return null
                             })}
@@ -178,7 +144,7 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                 </div>
                 <div className="px-2 py-2 sm:grid sm:grid-cols-2 sm:gap-2 sm:px-0 ">
                     <div className="flex items-center px-1 gap-2">
-                        <h2 className="text-sm font-medium leading-6 text-gray-900 ">Terms </h2>
+                        <h2 className="text-sm font-medium leading-6 text-gray-900 ">Terms : </h2>
                         <select className="text-sm leading-6 bg-slate-100 rounded p-2  text-gray-700 sm:col-span-2 sm:mt-0">
                             <option value="DueonReceipt">Due on Receipt</option>
                             <option value="DueonReceipt">Recurring</option>
@@ -215,67 +181,18 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                         </tr>
                     </thead>
                     <tbody>
-                        {items.map((item) => (
-                            <tr key={item.id}>
-                                <td className="">
-                                    <div>
-                                        <select
-                                            className="text-sm leading-6 bg-white border rounded p-2 text-gray-700 w-full"
-                                            value={item.name}
-                                            
-                                        >
-                                            <option value="">Select an Item</option>
-                                            {items.map((itemOption) => (
-                                                <option key={itemOption.id} value={itemOption.name}>
-                                                    {itemOption.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <textarea
-                                            className="form-control p-1 mt-2"
-                                            rows="2"
-                                            placeholder="Item Information"
-                                        ></textarea>
-                                    </div>
-                                </td>
-                                <td className="">
-                                    <input
-                                        className="p-2 border rounded-lg"
-                                        type="number"
-                                        value={item.qty}
-                                       
-                                    />
-                                </td>
-                                <td className="">
-                                    <input
-                                        className="p-2 border rounded-lg"
-                                        type="number"
-                                        value={item.rate}
-                                       
-                                    />
-                                </td>
-                                <td className="pl-5 items-center justify-center">
-                                    <button
-                                        className="rounded-md bg-red-500 p-2 text-white shadow-sm transition-colors duration-200 hover-bg-red-600"
-                                        onClick={() => deleteItemHandler(item.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                        
                     </tbody>
                 </table>
                 <button
-                    className="rounded-md bg-green-500 px-4 py-2 text-sm text-white shadow-sm "
+                    className="rounded-md bg-green-500 px-4 py-2 text-sm text-white shadow-sm"
                     type="button"
-                    onClick={addItemHandler}
+                    
                 >
                     Add Item
                 </button>
-                
                 <div className="grid grid-cols-2 mt-4">
-                    <div className="flex flex-col w-96 ">
+                    <div className="flex flex-col w-72 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
                             Customer Notes :
                         </label>
@@ -288,8 +205,7 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                             placeholder="Thanks for your business"
                         ></textarea>
                     </div>
-
-                    <div className="flex flex-col items-end space-y-2 pt-6 ">
+                    <div className="flex flex-col items-end space-y-2 p-3 ">
                         <div className="flex w-full justify-between md:w-1/2">
                             <span className="font-bold">Subtotal:</span>
                             <span>${subtotal.toFixed(2)}</span>
@@ -306,7 +222,7 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                         </div>
                     </div>
                 </div>
-                <div className="bg-slate-50 p-4 pt-2 rounded">
+                <div className="bg-slate-50 p-3 pt-2 rounded">
                     <div className="flex flex-col w-96 ">
                         <label className="font-medium " htmlFor="invoiceNumber">
                             Terms and Conditions :
@@ -342,7 +258,7 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
                             total
                         }}
                         items={items}
-                        onAddNextInvoice={addNextInvoiceHandler}
+                        // onAddNextInvoice={addNextInvoiceHandler}
                     />
                     <div className="space-y-4 py-2">
                         <div className="space-y-2">
@@ -392,14 +308,13 @@ function InvoiceForm({ customers, fetchCustomers, fetchItems}) {
 
 const mapStateToProps = (state) => ({
     customers: state.customers.customers,
-    items: state.items.items,
     loading: state.customers.loading,
     error: state.customers.error
 })
 
 const mapDispatchToProps = {
-    fetchCustomers,
-    fetchItems
+    fetchCustomers
+   
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InvoiceForm)
