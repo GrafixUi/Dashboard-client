@@ -17,7 +17,6 @@ export default function EditItem({ item_Id, onSave }) {
         })
     }
 
-    
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
@@ -57,7 +56,7 @@ export default function EditItem({ item_Id, onSave }) {
                             <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">$</span>
                             <input
                                 type="number"
-                                className="pl-8 w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                className="pl-8 w-full px-4 py-2  border rounded-md focus:outline-none focus:border-blue-500"
                                 name="sellingprice"
                                 value={formData.sellingprice}
                                 onChange={handleInputChange}

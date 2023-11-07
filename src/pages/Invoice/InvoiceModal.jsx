@@ -164,10 +164,10 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                 <h1 className="text-center text-lg font-bold text-gray-900">INVOICE</h1>
                                 <div className="mt-6 text-xs">
                                     <div className="mb-4 flex flex-col">
-                                        {/* <div className="mb-2">
+                                        <div className="mb-2">
                                             <span className="font-medium">Invoice Number :</span>
                                             <span>{invoiceInfo.invoiceNumber}</span>
-                                        </div> */}
+                                        </div>
                                         <div className="mb-2">
                                             <span className="font-medium">Invoice To :</span>
                                         </div>
@@ -175,7 +175,13 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                             <span>{invoiceInfo.customerName}</span>
                                         </div>
                                         <div className="mb-2">
-                                            <span>{invoiceInfo.billingaddress}</span>
+                                            <span>{invoiceInfo.address}</span>
+                                        </div>
+                                        <div className="mb-2">
+                                            <span>{invoiceInfo.city}</span>
+                                        </div>
+                                        <div className="mb-2">
+                                            <span>{invoiceInfo.country_Region}</span>
                                         </div>
                                     </div>
 

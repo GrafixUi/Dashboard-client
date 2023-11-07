@@ -6,6 +6,7 @@ import { deleteItem, fetchItems } from '../../Redux/actions/Items/items';
 import 'react-toastify/dist/ReactToastify.css';
 import { FiEdit2, FiX , FiPlus } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion'
 
 
 function Items({ items, fetchItems, deleteItem }) {
@@ -23,6 +24,7 @@ function Items({ items, fetchItems, deleteItem }) {
       };
 
     return (
+        <motion.dev>
         <div className="bg-white px-4 pt-3 pb-4 rounded-sm  flex-1">
             <div className="flex flex-row items-center gap-x-6 justify-between">
                 <h2 className="text-gray-700 font-medium gap-x-6">All items</h2>
@@ -87,6 +89,7 @@ function Items({ items, fetchItems, deleteItem }) {
                 </Modal>
             </div>
         </div>
+        </motion.dev>
     )
 }
 
