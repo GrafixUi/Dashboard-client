@@ -5,7 +5,11 @@ import { jsPDF } from 'jspdf'
 import logo from '../../assets/icons8-invoice-94.png'
 
 const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice }) => {
-    const { total } = invoiceInfo
+    console.log('invoiceInfo:', invoiceInfo)
+    const totalValue = invoiceInfo.total || 0
+
+    console.log('totalValue:', totalValue)
+
     function closeModal() {
         setIsOpen(false)
     }
@@ -214,27 +218,26 @@ const InvoiceModal = ({ isOpen, setIsOpen, invoiceInfo, items, onAddNextInvoice 
                                     </table>
 
                                     <div className="mt-4 flex flex-col items-end space-y-2">
-                                        <div className="flex w-full justify-between border-t border-black/10 pt-2">
+                                        <div className="flex w-full justify-between border-t border-black/10 py-2">
                                             <span className="font-bold">Subtotal:</span>
-                                            <span>${invoiceInfo.subtotal.toFixed(2)}</span>
+                                            <span>${invoiceInfo.subtotal ? invoiceInfo.subtotal.toFixed(2) : 0}</span>
                                         </div>
                                         <div className="flex w-full justify-between">
                                             <span className="font-bold">Discount:</span>
-                                            <span>${invoiceInfo.discountRate.toFixed(2)}</span>
-                                        </div>
-                                        {/* <div className="flex w-full justify-between">
-                                            <span className="font-bold">Tax:</span>
-                                            <span>${invoiceInfo.taxRate.toFixed(2)}</span>
-                                        </div> */}
-                                        <div className="flex w-full justify-between border-t border-black/10 py-2">
-                                            <span className="font-bold">Total:</span>
-                                            <span className="font-bold">
-                                                {total !== undefined
-                                                    ? total % 1 === 0
-                                                        ? total
-                                                        : total.toFixed(0)
-                                                    : '0.00'}
+                                            <span>
+                                                ${invoiceInfo.discountRate ? invoiceInfo.discountRate.toFixed(2) : 0}
                                             </span>
+                                        </div>
+                                        <div className="flex w-full justify-between">
+                                            <span className="font-bold">Tax:</span>
+                                            <span>${invoiceInfo.taxRate ? invoiceInfo.taxRate.toFixed(2) : 0}</span>
+                                        </div>
+                                        <div className="flex w-full justify-between border-t border-black/10 py-2">
+                                            <div className="font-bold mt-2 text-lg">
+                                                $
+                                                {totalValue !== undefined &&
+                                                    (totalValue % 1 === 0 ? totalValue : totalValue.toFixed(2))}
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

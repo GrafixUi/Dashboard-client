@@ -28,9 +28,9 @@ export default function Additems() {
         }
         try {
             const response = await axios.post('http://localhost:5000/api/items', formData)
-            console.log('Customer added successfully:', response.data)
+            console.log('Item added successfully:', response.data)
             setFormData(initialFormData);
-            toast.success('Customer has been deleted successfully');
+            toast.success('Item has been Added successfully');
             navigate('/items');
         } catch (error) {
             console.error('Error adding customer:', error)
@@ -64,7 +64,7 @@ export default function Additems() {
                             <span className="absolute inset-y-0 left-0 pl-3 flex items-center text-gray-600">$</span>
                             <input
                                 type="number"
-                                className="pl-8 w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                                className="pl-8 w-full px-4 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                                 name="sellingprice"
                                 value={formData.sellingprice}
                                 onChange={handleInputChange}

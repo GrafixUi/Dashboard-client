@@ -6,11 +6,12 @@ import logo from '../../assets/icons8-invoice-94.png'
 import { fetchCustomers } from '../../Redux/actions/Customer/customers'
 import { fetchItems } from '../../Redux/actions/Items/items'
 import { connect } from 'react-redux'
+import InvoiceItem from './InvoiceItem'
 
-function InvoiceForm({  customers, items: reduxItems, fetchCustomers, fetchItems }) {
+function InvoiceForm({ customers, fetchCustomers, fetchItems }) {
     const [isOpen, setIsOpen] = useState(false)
-    const [discount, setDiscount] = useState('')
-    const [tax, setTax] = useState('')
+    const [discount, setDiscount] = useState(0)
+    const [tax, setTax] = useState(0)
     const [invoiceNumber, setInvoiceNumber] = useState('0001')
     const [customerName, setCustomerName] = useState('')
     const [subtotal, setSubtotal] = useState(0)
@@ -32,18 +33,17 @@ function InvoiceForm({  customers, items: reduxItems, fetchCustomers, fetchItems
         setInvoiceNumber((prevNumber) => incrementString(prevNumber))
     }
 
-    const addItemHandler = async () => {
-        try {
-            const response = await fetchItems(); 
-            const newItems = response.data; 
-
-            setItems((prevItems) => [
-                ...prevItems,
-                ...newItems,
-            ]);
-        } catch (error) {
-            console.error("Error fetching items:", error);
-        }
+    const addItemHandler = () => {
+        const id = uid(6)
+        setItems((prevItem) => [
+            ...prevItem,
+            {
+                id: id,
+                name: '',
+                qty: 1,
+                price: ''
+            }
+        ])
     }
 
     const deleteItemHandler = (id) => {
@@ -53,19 +53,26 @@ function InvoiceForm({  customers, items: reduxItems, fetchCustomers, fetchItems
     useEffect(() => {
         const newSubtotal = items.reduce((prev, curr) => {
             if (curr.name?.trim().length > 0) {
-                return prev + Number(curr.rate) * Math.floor(curr.qty)
+                return prev + Number(curr.rate) * Math.floor(curr.qty);
             }
-            return prev
-        }, 0)
-        setSubtotal(newSubtotal)
-        setDiscountRate((discount * newSubtotal) / 100)
-        setTaxAmount((tax * newSubtotal) / 100)
-        setTotal(newSubtotal - (discount * newSubtotal) / 100 + (tax * newSubtotal) / 100)
-    }, [items, discount, tax])
+            return prev;
+        }, 0);
+    
+        setSubtotal(newSubtotal);
+    }, [items]);
+    
+    
+    useEffect(() => {
+        setDiscountRate((discount * subtotal) / 100)
+        setTaxAmount((tax * subtotal) / 100)
+        setTotal(subtotal - (discount * subtotal) / 100 + (tax * subtotal) / 100)
+    }, [subtotal, discount, tax])
+    
 
     useEffect(() => {
         fetchCustomers()
     }, [fetchCustomers])
+
 
     return (
         <form className="relative flex flex-col px-2  md:flex-row" onSubmit={reviewInvoiceHandler}>
@@ -216,42 +223,14 @@ function InvoiceForm({  customers, items: reduxItems, fetchCustomers, fetchItems
                     </thead>
                     <tbody>
                         {items.map((item) => (
-                            <tr key={item.id}>
-                                <td className="">
-                                    <div>
-                                        <select
-                                            className="text-sm leading-6 bg-white border rounded p-2 text-gray-700 w-full"
-                                            value={item.name}
-                                        >
-                                            <option value="">Select an Item</option>
-                                            {items.map((itemOption) => (
-                                                <option key={itemOption.id} value={itemOption.name}>
-                                                    {itemOption.name}
-                                                </option>
-                                            ))}
-                                        </select>
-                                        <textarea
-                                            className="form-control p-1 mt-2"
-                                            rows="2"
-                                            placeholder="Item Information"
-                                        ></textarea>
-                                    </div>
-                                </td>
-                                <td className="">
-                                    <input className="p-2 border rounded-lg" type="number" value={item.qty} />
-                                </td>
-                                <td className="">
-                                    <input className="p-2 border rounded-lg" type="number" value={item.sellingprice} />
-                                </td>
-                                <td className="pl-5 items-center justify-center">
-                                    <button
-                                        className="rounded-md bg-red-500 p-2 text-white shadow-sm transition-colors duration-200 hover-bg-red-600"
-                                        onClick={() => deleteItemHandler(item.id)}
-                                    >
-                                        Delete
-                                    </button>
-                                </td>
-                            </tr>
+                            <InvoiceItem
+                                key={item.id}
+                                id={item.id}
+                                name={item.name}
+                                qty={item.qty}
+                                price={item.sellingprice}
+                                onDeleteItem={deleteItemHandler}
+                            />
                         ))}
                     </tbody>
                 </table>
@@ -287,6 +266,12 @@ function InvoiceForm({  customers, items: reduxItems, fetchCustomers, fetchItems
                             <span className="font-bold">Discount:</span>
                             <span>
                                 ({discount || '0'}%)${discountRate.toFixed(2)}
+                            </span>
+                        </div>
+                        <div className="flex w-full justify-between md:w-1/2">
+                            <span className="font-bold">Tax:</span>
+                            <span>
+                                ({tax || '0'}%)${taxAmount.toFixed(2)}
                             </span>
                         </div>
                         <div className="flex w-full justify-between border-t border-gray-900/10  md:w-1/2 text-lg">
@@ -326,7 +311,6 @@ function InvoiceForm({  customers, items: reduxItems, fetchCustomers, fetchItems
                         invoiceInfo={{
                             invoiceNumber,
                             customerName,
-                            subtotal,
                             discountRate,
                             total
                         }}
