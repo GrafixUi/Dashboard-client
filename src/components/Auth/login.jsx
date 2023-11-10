@@ -27,7 +27,7 @@ export default function Login() {
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/api/auth/login', formData)
+            const response = await axios.post('https://dashboard-server-j55a.onrender.com/api/auth/login', formData)
 
             if (response.status === 200) {
                console.log("logged In");
