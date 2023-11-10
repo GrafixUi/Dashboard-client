@@ -27,7 +27,7 @@ export default function Additems() {
             return
         }
         try {
-            const response = await axios.post('http://localhost:5000/api/items', formData)
+            const response = await axios.post('https://dashboard-server-j55a.onrender.com/api/items', formData)
             console.log('Item added successfully:', response.data)
             setFormData(initialFormData);
             toast.success('Item has been Added successfully');

@@ -18,7 +18,7 @@ export const fetchCustomers = () => async (dispatch) => {
   dispatch({ type: FETCH_CUSTOMERS_REQUEST });
 
   try {
-    const response = await axios.get('http://localhost:5000/api/customers');
+    const response = await axios.get('https://dashboard-server-j55a.onrender.com/api/customers');
     dispatch({ type: FETCH_CUSTOMERS_SUCCESS, payload: response.data });
   } catch (error) {
     dispatch({ type: FETCH_CUSTOMERS_FAILURE, payload: error.message });
@@ -29,7 +29,7 @@ export const deleteCustomer = (kad_id) => async (dispatch) => {
   dispatch({ type: DELETE_CUSTOMER_REQUEST });
 
   try {
-    await axios.delete(`http://localhost:5000/api/customers/${kad_id}`);
+    await axios.delete(`https://dashboard-server-j55a.onrender.com/api/customers/${kad_id}`);
     dispatch({ type: DELETE_CUSTOMER_SUCCESS, payload: kad_id });
     toast.success('Customer has been deleted successfully');
     window.location.reload();
@@ -45,7 +45,7 @@ export const createCustomer = (customerData) => async (dispatch) => {
   dispatch({ type: CREATE_CUSTOMER_REQUEST });
 
   try {
-    const response = await axios.post('http://localhost:5000/api/customers', customerData);
+    const response = await axios.post('https://dashboard-server-j55a.onrender.com/api/customers', customerData);
     dispatch({ type: CREATE_CUSTOMER_SUCCESS, payload: response.data });
     toast.success('Customer has been Created successfully');
   } catch (error) {

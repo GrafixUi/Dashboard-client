@@ -28,7 +28,7 @@ export const deleteItemSuccess = (item_Id) => ({
 
 export const deleteItem = (item_Id) => async (dispatch) => {
   try {
-    await axios.delete(`http://localhost:5000/api/items/${item_Id}`);
+    await axios.delete(`https://dashboard-server-j55a.onrender.com/api/items/${item_Id}`);
     dispatch(deleteItemSuccess(item_Id));
     window.location.reload();
     toast.error('Item has been deleted successfully');
@@ -42,7 +42,7 @@ export const fetchItems = () => async (dispatch) => {
   dispatch(fetchItemsRequest());
 
   try {
-    const response = await axios.get('http://localhost:5000/api/items'); 
+    const response = await axios.get('https://dashboard-server-j55a.onrender.com/api/items'); 
     dispatch(fetchItemsSuccess(response.data));
   } catch (error) {
     dispatch(fetchItemsFailure(error.message));

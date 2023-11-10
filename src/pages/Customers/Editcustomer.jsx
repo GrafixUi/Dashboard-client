@@ -18,7 +18,7 @@ export default function EditCustomer({ customer, onSave }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await axios.put(`http://localhost:5000/api/customers/${formData.kad_id}`, formData)
+            await axios.put(`https://dashboard-server-j55a.onrender.com/api/customers/${formData.kad_id}`, formData)
             onSave()
             
             window.location.reload()

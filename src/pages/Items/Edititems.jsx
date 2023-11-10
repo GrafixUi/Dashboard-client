@@ -20,7 +20,7 @@ export default function EditItem({ item_Id, onSave }) {
     const handleSubmit = async (e) => {
         e.preventDefault()
         try {
-            await axios.put(`http://localhost:5000/api/items/${formData.item_id}`, formData)
+            await axios.put(`https://dashboard-server-j55a.onrender.com/api/items/${formData.item_id}`, formData)
             onSave()
             toast.success('Item has been deleted successfully');
             window.location.reload()
