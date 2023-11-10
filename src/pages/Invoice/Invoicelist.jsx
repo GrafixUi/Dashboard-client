@@ -6,36 +6,7 @@ import { Link } from 'react-router-dom'
 
 const getData = () => {
     const data = [
-        {
-            name: 'Jane Cooper',
-            email: 'jane.cooper@example.com',
-            Duedate: '18/10/2023',
-            status: 'paid',
-            role: 'Admin',
-            amount: '$ 35',
-            invoice: 'INV - 001',
-            date: '25/10/2023'
-        },
-        {
-            name: 'Jane Cooper',
-            email: 'jane.cooper@example.com',
-            Duedate: '18/10/2023',
-            status: 'pending',
-            role: 'Admin',
-            amount: '$ 35',
-            invoice: 'INV - 002',
-            date: '23/10/2023'
-        },
-        {
-            name: 'Jane Cooper',
-            email: 'jane.cooper@example.com',
-            Duedate: '18/10/2023',
-            status: 'notpaid',
-            role: 'Admin',
-            amount: '$ 35',
-            invoice: 'INV - 003',
-            date: '22/10/2023'
-        }
+        
     ]
     return [...data]
 }
