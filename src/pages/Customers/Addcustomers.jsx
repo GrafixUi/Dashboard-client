@@ -40,7 +40,7 @@ function Addcustomers({ createCustomer }) {
     }
 
     const handleCellChange = (e, id, field) => {
-        const updatedData = data.map((row) => (row.id === id ? { ...row, [field]: e.target.value } : row))
+        // const updatedData = data.map((row) => (row.id === id ? { ...row, [field]: e.target.value } : row))
     }
 
     const handleEditClick = (id, field) => {

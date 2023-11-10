@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import InvoiceField from './InvoiceField';
+// import InvoiceField from './InvoiceField';
 import { connect } from 'react-redux';
 import { fetchItems } from '../../Redux/actions/Items/items';
 import { FiX } from 'react-icons/fi';
@@ -22,7 +22,7 @@ function InvoiceItem({
   }, [fetchItems]);
 
   const handleItemChange = (selectedItem) => {
-    
+
     const selectedItemObj = items.find((item) => item.name === selectedItem);
     setItemDetails({
       description: selectedItemObj ? selectedItemObj.description : '',
